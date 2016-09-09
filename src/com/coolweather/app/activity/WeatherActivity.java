@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author aiyuan
@@ -26,6 +28,10 @@ import android.widget.TextView;
  */
 public class WeatherActivity extends Activity implements OnClickListener{
 	String TAG = "WeatherActivity";
+	//上次按下返回键的系统时间  
+    private long lastBackTime = 0;  
+    //当前按下返回键的系统时间  
+    private long currentBackTime = 0; 
 	private LinearLayout weatherInfoLayout;
 	/*
 	 * 用于显示城市名
@@ -191,6 +197,24 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		}
 		
 			
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		//捕获返回键按下的事件  
+        if(keyCode == KeyEvent.KEYCODE_BACK){  
+            //获取当前系统时间的毫秒数  
+            currentBackTime = System.currentTimeMillis();  
+            //比较上次按下返回键和当前按下返回键的时间差，如果大于2秒，则提示再按一次退出  
+            if(currentBackTime - lastBackTime > 2 * 1000){  
+                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();  
+                lastBackTime = currentBackTime;  
+            }else{ //如果两次按下的时间差小于2秒，则退出程序  
+                finish();  
+            }  
+            return true;  
+        }  
+        return super.onKeyDown(keyCode, event);
 	}
 
 }
