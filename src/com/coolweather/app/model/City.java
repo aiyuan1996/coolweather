@@ -1,5 +1,11 @@
 package com.coolweather.app.model;
 
+/**
+ * City的实体类，方便对City的操作
+ * @author aiyuan
+ * @time 2016.9.7
+ *
+ */
 public class City {
 	private int id;
 	private String cityName;

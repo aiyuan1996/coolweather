@@ -5,11 +5,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -28,7 +30,12 @@ import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
 
+/**
+ * @author aiyuan
+ *
+ */
 public class ChooseAreaActivity extends Activity {
+	String TAG = "ChooseAreaActivity";
 
 	public static final int LEVEL_PROVINCE = 0;
 	public static final int LEVEL_CITY = 1;
@@ -72,13 +79,15 @@ public class ChooseAreaActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
-			Intent intent = new Intent(this, WeatherActivity.class);
+		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
+		Log.d(TAG, "isFromWeatherActivity=" + isFromWeatherActivity);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ChooseAreaActivity.this);
+		/*if(sharedPreferences.getBoolean("city_selected", false) && !isFromWeatherActivity){
+			Intent intent = new Intent(this,WeatherActivity.class);
+			Log.d(TAG, 11+"");
 			startActivity(intent);
 			finish();
-			return;
+			return ;
 		}*/
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
@@ -97,13 +106,14 @@ public class ChooseAreaActivity extends Activity {
 				} else if (currentLevel == LEVEL_CITY) {
 					selectedCity = cityList.get(index);
 					queryCounties();
-				} /*else if (currentLevel == LEVEL_COUNTY) {
+				} else if (currentLevel == LEVEL_COUNTY) {
 					String countyCode = countyList.get(index).getCountyCode();
+					Log.d(TAG, countyCode+"h");
 					Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
 					intent.putExtra("county_code", countyCode);
 					startActivity(intent);
 					finish();
-				}*/
+				}
 			}
 		});
 		queryProvinces();  // 加载省级数据
@@ -151,6 +161,7 @@ public class ChooseAreaActivity extends Activity {
 	 * 查询选中市内所有的县，优先从数据库查询，如果没有查询到再去服务器上查询。
 	 */
 	private void queryCounties() {
+		Log.d(TAG, selectedCity.getId()+"");
 		countyList = coolWeatherDB.loadCounties(selectedCity.getId());
 		if (countyList.size() > 0) {
 			dataList.clear();
@@ -168,6 +179,8 @@ public class ChooseAreaActivity extends Activity {
 	
 	/**
 	 * 根据传入的代号和类型从服务器上查询省市县数据。
+	 * @param code
+	 * @param type
 	 */
 	private void queryFromServer(final String code, final String type) {
 		String address;
@@ -255,10 +268,11 @@ public class ChooseAreaActivity extends Activity {
 		} else if (currentLevel == LEVEL_CITY) {
 			queryProvinces();
 		} else {
-			/*if (isFromWeatherActivity) {
+			if (isFromWeatherActivity) {
+				Log.d(TAG, "issi");
 				Intent intent = new Intent(this, WeatherActivity.class);
 				startActivity(intent);
-			}*/
+			}
 			finish();
 		}
 	}

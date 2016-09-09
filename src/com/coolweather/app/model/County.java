@@ -1,5 +1,11 @@
 package com.coolweather.app.model;
 
+/**
+ * County的实体类，方便对County的操作
+ * @author aiyuan
+ * @time 2016.9.7
+ *
+ */
 public class County {
 	private int id;
 	private String countyName;
@@ -20,7 +26,7 @@ public class County {
 	public String getCountyCode(){
 		return countyCode;
 	}
-	public void setCountyCode(String coundtyCode){
+	public void setCountyCode(String countyCode){
 		this.countyCode = countyCode;
 	}
 	public int getCityId(){

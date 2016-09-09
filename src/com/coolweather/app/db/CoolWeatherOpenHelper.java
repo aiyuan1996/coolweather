@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class CoolWeatherOpenHelper extends SQLiteOpenHelper{
+	String TAG = "CoolWeatherOpenHelper";
 	/**
 	 * ProvinceΩ®±Ì”Ôæ‰
 	 */
@@ -35,24 +36,21 @@ public class CoolWeatherOpenHelper extends SQLiteOpenHelper{
 	public CoolWeatherOpenHelper(Context context, String name,
 			CursorFactory factory, int version) {
 		super(context, name, factory, version);
-		// TODO Auto-generated constructor stub 
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.i("CoolWeatherOpenHelper", "province");
 		db.execSQL(CREATE_PROVINCE);
-		Log.i("CoolWeatherOpenHelper", "province created");
+		Log.i(TAG, "province created");
 		db.execSQL(CREATE_CITY);
-		Log.i("CoolWeatherOpenHelper", "city created");
+		Log.i(TAG, "city created");
 		db.execSQL(CREATE_COUNTY);
-		Log.i("CoolWeatherOpenHelper", "county created");
+		Log.i(TAG, "county created");
 		
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
 		
 	}
 
